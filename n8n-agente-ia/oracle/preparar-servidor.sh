@@ -9,6 +9,18 @@ if [[ $EUID -ne 0 ]]; then
 fi
 USUARIO="${SUDO_USER:-ubuntu}"
 
+# En servidores con poca RAM (p. ej. VM.Standard.E2.1.Micro de 1 GB) se crea
+# un archivo de intercambio de 2 GB para que n8n no se quede sin memoria.
+ram_mb=$(awk '/MemTotal/{print int($2/1024)}' /proc/meminfo)
+if [[ "$ram_mb" -lt 3000 && ! -f /swapfile ]]; then
+  echo "==> Poca RAM (${ram_mb} MB): creando swap de 2 GB"
+  fallocate -l 2G /swapfile
+  chmod 600 /swapfile
+  mkswap /swapfile
+  swapon /swapfile
+  echo '/swapfile none swap sw 0 0' >> /etc/fstab
+fi
+
 echo "==> Actualizando paquetes"
 apt-get update -y
 apt-get upgrade -y
