@@ -10,6 +10,10 @@
 # Uso:
 #   bash reintentar-arm.sh ssh-key-2026-11-02.key.pub
 #   OCPUS=1 MEMORIA=6 bash reintentar-arm.sh ssh-key-2026-11-02.key.pub
+#
+# Aviso al celular (opcional): instala la app "ntfy", suscríbete a un tema
+# con nombre difícil de adivinar y pásalo en AVISO_NTFY:
+#   AVISO_NTFY=n8n-luis-8x2k OCPUS=1 MEMORIA=6 bash reintentar-arm.sh archivo.pub
 set -uo pipefail
 
 LLAVE="${1:-}"
@@ -17,6 +21,11 @@ OCPUS="${OCPUS:-2}"
 MEMORIA="${MEMORIA:-12}"
 ESPERA="${ESPERA:-60}"
 NOMBRE="${NOMBRE:-n8n}"
+AVISO_NTFY="${AVISO_NTFY:-}"
+
+avisar() {
+  [[ -n "$AVISO_NTFY" ]] && curl -s -o /dev/null -H "Title: Oracle ARM" -d "$1" "https://ntfy.sh/$AVISO_NTFY" || true
+}
 
 if [[ -z "$LLAVE" || ! -f "$LLAVE" ]]; then
   echo "Indica la llave pública: bash reintentar-arm.sh archivo.pub" >&2
@@ -73,6 +82,7 @@ while true; do
       --query 'data[0]."public-ip"' --raw-output 2>/dev/null)
     echo
     echo "Instancia creada. IP pública: ${IP:-revisar en la consola}"
+    avisar "Servidor creado. IP pública: ${IP:-revisar en la consola}"
     exit 0
   fi
   if echo "$salida" | grep -qi "out of host capacity\|out of capacity"; then
@@ -83,6 +93,7 @@ while true; do
   else
     echo "  Error distinto a capacidad; se detiene para revisarlo:"
     echo "$salida" | tail -20
+    avisar "El script se detuvo por un error. Revisa Cloud Shell."
     exit 1
   fi
   sleep "$ESPERA"
