@@ -65,7 +65,7 @@ intento=0
 while true; do
   intento=$((intento + 1))
   echo "[$(date '+%H:%M:%S')] Intento $intento..."
-  salida=$(oci compute instance launch \
+  salida=$(oci --no-retry compute instance launch \
     --compartment-id "$C" \
     --availability-domain "$AD" \
     --display-name "$NOMBRE" \
