@@ -24,7 +24,7 @@
     },
     {
       "parameters": {
-        "modelName": "models/gemini-2.5-flash",
+        "modelName": "models/gemini-3.8-flash",
         "options": { "temperature": 0.4 }
       },
       "id": "a1b2c3d4-0003-4000-8000-000000000003",

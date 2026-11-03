@@ -56,7 +56,7 @@ Para apagarlo: `docker compose down`. Los flujos se conservan en el volumen `n8n
 
 1. Doble clic en el nodo **Google Gemini**.
 2. En *Credential* → **Create new credential** → pega la API key → **Save**.
-3. En *Model*, abre la lista y elige un modelo **Flash** (por ejemplo `gemini-2.5-flash`). Si el que viene en el archivo ya no aparece, toma el Flash más reciente: es el que tiene cuota gratuita más amplia.
+3. En *Model*, abre la lista y elige un modelo **Flash** (por ejemplo `gemini-3.8-flash`). Si el que viene en el archivo ya no aparece, toma el Flash más reciente: es el que tiene cuota gratuita más amplia.
 
 ## Paso 6. Probar
 
